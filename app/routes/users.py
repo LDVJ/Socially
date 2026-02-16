@@ -32,3 +32,8 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already Exist")
     db.refresh(new_user)
     return new_user
+
+@router.get("/{user_id}/posts", response_model=schemas.UserPostResponse)
+def get_user_posts(user_id : int, db : Session = Depends(get_db)):
+    user_post_details = db.query(models.Users).filter(models.Users.id == user_id).first()
+    return user_post_details
