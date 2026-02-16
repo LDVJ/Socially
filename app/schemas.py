@@ -43,3 +43,15 @@ class UserPostResponse(UserBase):
     id: int
     created_at: datetime
     user_posts: List[PostUserResponse]
+
+class ValidUser(BaseModel):
+    email : EmailStr
+    password : str
+
+class TokenData(BaseModel):
+    id : int
+
+class ValidToken(BaseModel):
+    access_token : str
+    token_type : str
+
