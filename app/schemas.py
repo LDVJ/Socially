@@ -53,6 +53,10 @@ class PostUserResponse(PostBase):
     created_at : datetime
     updated_at : datetime | None = None
 
+class PostLikeCount(BaseModel):
+    Posts: PostUserResponse
+    like_count : int
+
 class PostResponse(PostUserResponse): #independent schema
     owner_id : int
     owner : UserResponse

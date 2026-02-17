@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from .. import schemas, models, oauth2
 from ..db import get_db
 from typing import List
+from sqlalchemy import func
 
 
 router = APIRouter(
@@ -10,9 +11,10 @@ router = APIRouter(
     tags=["Posts"]
 )
 
-@router.get("/", response_model=List[schemas.PostUserResponse])
+@router.get("/", response_model=List[schemas.PostLikeCount])
 def get_all_posts(db: Session = Depends(get_db)):
-    all_posts = db.query(models.Posts).all()
+    # all_posts = db.query(models.Posts).all()
+    all_posts = db.query(models.Posts, func.count(models.PostLikes.post_id).label("like_count")).outerjoin(models.PostLikes, models.PostLikes.post_id == models.Posts.id).group_by(models.Posts.id)
     return all_posts
 
 @router.post("/",response_model=schemas.PostUserResponse)
