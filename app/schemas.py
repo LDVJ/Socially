@@ -25,6 +25,24 @@ class PostBase(BaseModel):
 class UserCreate(UserBase):
     password : str
 
+class UpdateUser(BaseModel):
+    id: int
+    username : str | None = None
+    name : str | None = None
+
+    model_config = {
+        "from_attributes":True
+    }
+
+class UpdatePost(BaseModel):
+    id: int
+    title: str | None = None
+    content : str | None = None
+    tags : List[str] | None = None
+
+    model_config = {
+        "from_attributes":True
+    }
 
 class UserResponse(UserBase): #independant schema 
     id : int
@@ -55,3 +73,7 @@ class ValidToken(BaseModel):
     access_token : str
     token_type : str
 
+class PostLikes(BaseModel):
+    id: int
+    post_id : int
+    user_id : int

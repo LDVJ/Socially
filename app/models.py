@@ -1,5 +1,5 @@
 from .db import Base
-from sqlalchemy import String, DateTime,func, ForeignKey, JSON
+from sqlalchemy import String, DateTime,func, ForeignKey, JSON, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
@@ -27,3 +27,16 @@ class Posts(Base):
     updated_at : Mapped[datetime | None] = mapped_column(DateTime(timezone=True),nullable=True,onupdate=func.now())
     owner_id : Mapped[int] = mapped_column(ForeignKey("users.id", ondelete ="CASCADE"), nullable=False)
     owner: Mapped["Users"] = relationship(back_populates="user_posts")
+
+
+class PostLikes(Base):
+    __tablename__ = "post_likes"
+
+    id : Mapped[int] = mapped_column(primary_key=True)
+    post_id : Mapped[int] = mapped_column(ForeignKey("posts.id", ondelete="CASCADE"))
+    user_id : Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+
+    __table_args__ = (
+        UniqueConstraint("post_id","user_id", name="user_post_like"),
+    )
+

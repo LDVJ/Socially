@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from ..db import get_db
-from .. import schemas, models, utilities
+from .. import schemas, models, utilities,oauth2
 from typing import List
 
 
@@ -37,3 +37,25 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 def get_user_posts(user_id : int, db : Session = Depends(get_db)):
     user_post_details = db.query(models.Users).filter(models.Users.id == user_id).first()
     return user_post_details
+
+
+@router.patch("/", response_model=schemas.UserBase, status_code= status.HTTP_201_CREATED)
+def update_user(payload: schemas.UpdateUser, db : Session = Depends(get_db), user: models.Users = Depends(oauth2.get_user)):
+    if payload.id != user.id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Uauthorized Action")
+    orignal_user = db.query(models.Users).filter(models.Users.id == user.id).first()
+    updated_date = payload.model_dump(exclude_unset=True)
+    for key, value in updated_date.items():
+        setattr(orignal_user, key, value)
+    db.commit()
+    db.refresh(orignal_user)
+
+    return orignal_user
+
+@router.delete("/{user_id}",status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: int, db : Session = Depends(get_db), user : dict = Depends(oauth2.get_user)):
+    requested_user = db.query(models.Users).filter(models.Users.id == user_id).first()
+    if requested_user.id != user.id:
+        raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail="Unauthorised request")
+    db.delete(requested_user)
+    db.commit()
