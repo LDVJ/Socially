@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+import os
 
 class settings(BaseSettings):
     DB_USER : str
@@ -11,6 +11,9 @@ class settings(BaseSettings):
     ALGORITHM : str
     EXP_TIME_MINUTES : int
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(
+        env_file=os.path.join(os.getcwd(), ".env"),
+        extra="ignore"
+    )
 
 setting = settings()
