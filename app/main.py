@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .db import Base,engine
 from . import models
 from .routes import users, authentication,posts
@@ -7,6 +8,16 @@ from .services import post_like
 # models.Base.metadata.create_all(bind = engine)
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.middleware(
+    CORSMiddleware,
+    allow_origins= origins,
+    allow_credentials =True,
+    allow_headers = ["*"],
+    allow_methods= ["*"]
+    )
 
 @app.get("/")
 def root():
