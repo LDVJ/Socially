@@ -14,7 +14,7 @@ class Users(Base):
     username : Mapped[str] = mapped_column(String(150),nullable=False, unique=True)
     created_at : Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     user_posts :Mapped[list["Posts"]]= relationship(back_populates="owner")
-    mob_number : Mapped[str] = mapped_column(String(15), nullable=True)
+    # mob_number : Mapped[str] = mapped_column(String(15), nullable=True)
 
 
 class Posts(Base):

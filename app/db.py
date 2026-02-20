@@ -12,7 +12,8 @@ from .config import setting
 #     query={"sslmode": "require"}
 # )
 # DB_URL = "postgresql+psycopg://socially_db_user:gzN4jk8w9lr0a4CTS5S1u0OnUB40Vijn@dpg-d6bv48hr0fns73ar1m4g-a.oregon-postgres.render.com/socially_db?sslmode=require"
-DB_URL = f"postgresql+psycopg://{setting.DB_USER}:{setting.DB_PWD}@{setting.DB_HOST}/{setting.DB_NAME}?sslmode=require"
+# DB_URL = f"postgresql+psycopg://{setting.DB_USER}:{setting.DB_PWD}@{setting.DB_HOST}/{setting.DB_NAME}?sslmode=require"
+DB_URL = f"postgresql+psycopg://{setting.DB_USER}:{setting.DB_PWD}@{setting.DB_HOST}/{setting.DB_NAME}"
 
 engine = create_engine(DB_URL)
 

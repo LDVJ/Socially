@@ -7,7 +7,7 @@ class UserBase(BaseModel):
     name : str
     email : EmailStr
     username : str
-
+    # mob_number: str
     model_config = {
         "from_attributes":True
     }
@@ -56,6 +56,11 @@ class PostUserResponse(PostBase):
 class PostLikeCount(BaseModel):
     Posts: PostUserResponse
     like_count : int
+
+class PostUserList(BaseModel):
+    Posts: PostUserResponse
+    like_count : int
+    Users: List[UpdateUser]
 
 class PostResponse(PostUserResponse): #independent schema
     owner_id : int
