@@ -11,3 +11,4 @@ pydantic-settings>=2.1,<2.5
 
 python-jose[cryptography]
 python-dotenv
+email-validator
