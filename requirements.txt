@@ -1,16 +1,24 @@
+# For Login and Forms
+python-multipart
+
+# For Password Hashing
 pwdlib[argon2]
+
+# For Web Server and Framework
 fastapi>=0.110,<0.115
 uvicorn[standard]
-PyJWT
 
+# For Tokens and JWT
+PyJWT
+python-jose[cryptography]
+
+# For Database
 sqlalchemy>=2.0,<2.1
 psycopg[binary]
 psycopg2-binary
 
+# For Settings and Validation
 pydantic>=2.4,<2.9
 pydantic-settings>=2.1,<2.5
 email-validator
-
-python-jose[cryptography]
 python-dotenv
-
