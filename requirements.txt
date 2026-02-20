@@ -1,6 +1,7 @@
 pwdlib[argon2]
 fastapi>=0.110,<0.115
 uvicorn[standard]
+PyJWT
 
 sqlalchemy>=2.0,<2.1
 psycopg[binary]
