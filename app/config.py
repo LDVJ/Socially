@@ -11,6 +11,11 @@ class settings(BaseSettings):
     ALGORITHM : str
     EXP_TIME_MINUTES : int
 
+    @property
+    def cleaned_pwd(self):
+        return self.DB_PWD.strip()
+
+
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.getcwd(), ".env"),
         extra="ignore"
