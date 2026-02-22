@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .db import Base,engine
 from . import models
 from .routes import users, authentication,posts
-from .services import post_like
+from .services import post_like, follow_system
 
 # models.Base.metadata.create_all(bind = engine)
 
@@ -28,3 +28,4 @@ app.include_router(users.router)
 app.include_router(posts.router)
 
 app.include_router(post_like.router)
+app.include_router(follow_system.router)

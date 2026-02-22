@@ -50,7 +50,7 @@ class FollowList(Base):
 
     follower_uid : Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
-    created_at : Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    created_at : Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     __table_args__ = (
         UniqueConstraint("followed_uid", "follower_uid", name="followers_unique"),
     )
