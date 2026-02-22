@@ -76,7 +76,6 @@ def get_follow_Status(uid: int, db : Session = Depends(get_db), user : models.Us
             models.FollowList.followed_uid == uid
         )
     ).scalar()
-    print(is_following)
     if is_following:
         return {
             "status" : FollowStatus.FOLLOWING

@@ -2,7 +2,8 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from ..db import get_db
-from .. import schemas, models, utilities,oauth2
+from .. import schemas, utilities,oauth2
+from .. import models
 from typing import List
 
 
@@ -53,7 +54,7 @@ def update_user(payload: schemas.UpdateUser, db : Session = Depends(get_db), use
     return orignal_user
 
 @router.delete("/{user_id}",status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(user_id: int, db : Session = Depends(get_db), user : dict = Depends(oauth2.get_user)):
+def delete_user(user_id: int, db : Session = Depends(get_db), user : models.Users = Depends(oauth2.get_user)):
     requested_user = db.query(models.Users).filter(models.Users.id == user_id).first()
     if requested_user.id != user.id:
         raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail="Unauthorised request")

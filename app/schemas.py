@@ -101,3 +101,16 @@ class Followers(BaseModel):
 
 class FollowStatusResponse(BaseModel):
     status: FollowStatus
+
+
+# post Comments
+class CreatePostComment(BaseModel):
+    content : str
+
+class CommentResponse(CreatePostComment):
+    id : int
+    post_id : int
+    comment_uid : int
+    parent_id : int
+    created_at : datetime
+    updated_at : datetime | None = None
