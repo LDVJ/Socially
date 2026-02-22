@@ -106,11 +106,19 @@ class FollowStatusResponse(BaseModel):
 # post Comments
 class CreatePostComment(BaseModel):
     content : str
+    post_id : int
+
+    model_config = {
+        "from_attributes": True
+    }
 
 class CommentResponse(CreatePostComment):
     id : int
-    post_id : int
     comment_uid : int
     parent_id : int
     created_at : datetime
     updated_at : datetime | None = None
+
+class updateComment(CreatePostComment):
+    id : int
+

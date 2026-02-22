@@ -16,6 +16,7 @@ class Posts(Base):
     updated_at : Mapped[datetime | None] = mapped_column(DateTime(timezone=True),nullable=True,onupdate=func.now())
     owner_id : Mapped[int] = mapped_column(ForeignKey("users.id", ondelete ="CASCADE"), nullable=False)
     owner: Mapped["usersdb.Users"] = relationship(back_populates="user_posts")
+    comments : Mapped[list["PostComments"]] = relationship(back_populates="post")
 
 class PostLikes(Base):
     __tablename__ = "post_likes"
@@ -44,3 +45,5 @@ class PostComments(Base):
     created_at : Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
 
     updated_at : Mapped[datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
+
+    post : Mapped["Posts"] = relationship("Posts",back_populates="comments")
