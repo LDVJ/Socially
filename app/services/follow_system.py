@@ -4,6 +4,8 @@ from sqlalchemy.exc import IntegrityError
 from ..db import get_db
 from .. import models, schemas, oauth2
 from typing import List
+from  sqlalchemy import exists
+from ..constants.follow_status import FollowStatus
 
 router = APIRouter(
     prefix="/follow",
@@ -58,3 +60,28 @@ def get_followed(uid : int, db: Session = Depends(get_db), search = "",limit = 1
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User Not found")
     followers =db.query(models.Users).join(models.FollowList, models.FollowList.followed_uid == models.Users.id).filter(models.FollowList.follower_uid == uid).filter(models.Users.username.contains(search)).limit(limit=limit).offset(offset=skip).all()
     return followers
+
+@router.get("/{uid}/follow_status", response_model=schemas.FollowStatusResponse, status_code=status.HTTP_200_OK)
+def get_follow_Status(uid: int, db : Session = Depends(get_db), user : models.Users = Depends(oauth2.get_user)):
+    valid_user = db.get(models.Users, uid)
+    if not valid_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid User")
+    if uid == user.id:
+        return {
+            "status" : FollowStatus.NOT_FOLLOWING
+        }
+    is_following = db.query(
+        exists().where(
+            models.FollowList.follower_uid == user.id,
+            models.FollowList.followed_uid == uid
+        )
+    ).scalar()
+    print(is_following)
+    if is_following:
+        return {
+            "status" : FollowStatus.FOLLOWING
+        }
+    else: 
+        return {
+            "status" : FollowStatus.NOT_FOLLOWING
+        }

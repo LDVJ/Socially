@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import List,Dict, Any
+from .constants.follow_status import FollowStatus
 
 # Base schemas
 class UserBase(BaseModel):
@@ -97,3 +98,6 @@ class Followers(BaseModel):
     follower_uid: int
     followed_uid : int
     created_at : datetime
+
+class FollowStatusResponse(BaseModel):
+    status: FollowStatus
