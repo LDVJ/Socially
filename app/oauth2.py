@@ -39,5 +39,6 @@ def verify_token(bearer_token:str, error_response) -> str:
 def get_user(bearer_token : str = Depends(OAuth2_schema), db : Session = Depends(get_db)):
     error_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Unauthorised action', headers={"WWW_Authenticate":"Bearer"})
     token = verify_token(bearer_token=bearer_token,error_response=error_exception)
+    print("=============================",token)
     user_data = db.query(models.Users).filter(models.Users.id == token.id).first()
     return user_data

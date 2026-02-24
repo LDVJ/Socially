@@ -1,0 +1,9 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      # - <port on local host>:<port on container>
+      - 8000:8000
+    env_file:
+      - ./.env
